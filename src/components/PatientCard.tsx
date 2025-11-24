@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useRef, useEffect } from 'react';
 import type { Patient } from '../types/patient';
 import { CaretDownIcon, PencilSimpleLineIcon } from '@phosphor-icons/react';
 
@@ -12,6 +12,10 @@ interface PatientCardProps {
 export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => {
   const [imageError, setImageError] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const urlRef = useRef<HTMLAnchorElement>(null);
+  const [nameTitle, setNameTitle] = useState<string | undefined>(undefined);
+  const [urlTitle, setUrlTitle] = useState<string | undefined>(undefined);
 
   const showBlankAvatar = !patient.avatar || imageError;
 
@@ -19,8 +23,41 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
     setIsExpanded(!isExpanded);
   };
 
+  // Check if the name and website are overflowing and set the title attribute to the full text if they are
+  useEffect(() => {
+    const checkOverflow = () => {
+      // Use requestAnimationFrame to ensure DOM has updated
+      requestAnimationFrame(() => {
+        if (nameRef.current) {
+          const isOverflowing = nameRef.current.scrollWidth > nameRef.current.clientWidth;
+          setNameTitle(isOverflowing ? patient.name : undefined);
+        }
+        if (urlRef.current) {
+          const isOverflowing = urlRef.current.scrollWidth > urlRef.current.clientWidth;
+          setUrlTitle(isOverflowing ? patient.website : undefined);
+        }
+      });
+    };
+  
+    // Initial check
+    checkOverflow();
+    
+    // Add resize listener with debouncing for better performance
+    let timeoutId: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(checkOverflow, 100);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timeoutId);
+    };
+  }, [patient.name, patient.website]);
+
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 h-fit">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 w-full">
       <div className="p-6">
         <div className="flex items-center gap-4">
           {showBlankAvatar ? (
@@ -40,15 +77,21 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
             />
           )}
           <div className="flex-1 min-w-0">
-            <h3 className="text-xl font-semibold text-gray-800 truncate">
+            <h3 
+              ref={nameRef}
+              className="text-xl font-semibold text-gray-800 truncate w-full"
+              title={nameTitle}
+            >
               {patient.name}
             </h3>
             {patient.website && (
               <a
+                ref={urlRef}
                 href={patient.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 text-sm truncate block"
+                className="text-blue-600 hover:text-blue-800 text-sm truncate block w-full"
+                title={urlTitle}
               >
                 {patient.website}
               </a>

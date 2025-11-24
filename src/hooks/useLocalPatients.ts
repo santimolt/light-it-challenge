@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { Patient } from '../types/patient';
 
+/**
+ * Hook for managing local patient state (editable copy).
+ * This maintains a local copy of patients that can be edited without
+ * immediately affecting the server data. Syncs with fetchedPatients when they change.
+ */
 export const useLocalPatients = (fetchedPatients: Patient[] | undefined) => {
   const [localPatients, setLocalPatients] = useState<Patient[]>(
-    () => fetchedPatients || []
+    fetchedPatients || []
   );
 
   useEffect(() => {
-    if (fetchedPatients && fetchedPatients.length > 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setLocalPatients(fetchedPatients);
-    }
+    setLocalPatients(fetchedPatients || []);
   }, [fetchedPatients]);
 
   const updatePatient = (

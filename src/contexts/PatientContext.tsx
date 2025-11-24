@@ -10,6 +10,8 @@ import { ModalMode } from '../types/modalMode';
 interface PatientContextValue {
   /** Local copy of patients for editing */
   localPatients: Patient[];
+  /** Whether data is currently loading */
+  isLoading: boolean;
   /** Whether the modal is currently open */
   isModalOpen: boolean;
   /** The patient currently being edited, or null */
@@ -41,7 +43,7 @@ interface PatientProviderProps {
 }
 
 export const PatientProvider = ({ children }: PatientProviderProps) => {
-  const { data: fetchedPatients, isLoading, isError, error } = usePatients();
+  const { fetchedPatients, isPending, isError, error } = usePatients();
   const { localPatients, updatePatient, getPatientById, addPatient } =
     useLocalPatients(fetchedPatients);
   const {
@@ -82,8 +84,12 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     return getPatientById(selectedPatient.id) || selectedPatient;
   }, [selectedPatient, getPatientById]);
 
+  // Use fetchedPatients for display if localPatients is empty (avoids flashing the add patients button)
+  const displayPatients = localPatients.length > 0 ? localPatients : (fetchedPatients || []);
+
   const value: PatientContextValue = useMemo(() => ({
-    localPatients,
+    localPatients: displayPatients,
+    isLoading: isPending || !fetchedPatients,
     isModalOpen,
     selectedPatient: currentPatient,
     modalMode,
@@ -91,15 +97,7 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     openCreateModal,
     closeModal,
     handleSave,
-  }), [localPatients, isModalOpen, currentPatient, modalMode, openModal, openCreateModal, closeModal, handleSave]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading patients...</p>
-      </div>
-    );
-  }
+  }), [displayPatients, isPending, fetchedPatients, isModalOpen, currentPatient, modalMode, openModal, openCreateModal, closeModal, handleSave]);
 
   if (isError) {
     return (
