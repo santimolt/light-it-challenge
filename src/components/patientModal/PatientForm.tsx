@@ -164,18 +164,18 @@ export const PatientForm = ({
         )}
       </div>
 
-      <div className="flex gap-3 justify-end">
+      <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end">
         <button
           type="button"
           onClick={handleCancel}
-          className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+          className="px-4 py-2 text-sm sm:text-base text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 w-full sm:w-auto"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={formik.isSubmitting}
-          className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 text-sm sm:text-base text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
         >
           {mode === ModalMode.Create ? 'Create Patient' : 'Save Changes'}
         </button>

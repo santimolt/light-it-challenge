@@ -39,6 +39,14 @@ dialog::backdrop {
 
 dialog {
   animation: slide-in 0.2s ease-out;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+@media (max-width: 640px) {
+  dialog {
+    max-height: calc(100vh - 1rem);
+  }
 }
 
 @keyframes fade-in {

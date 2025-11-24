@@ -58,11 +58,11 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 w-full">
-      <div className="p-6">
-        <div className="flex items-center gap-4">
+      <div className="p-4 sm:p-6">
+        <div className="flex items-center gap-3 sm:gap-4">
           {showBlankAvatar ? (
-            <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
-              <span className="text-gray-500 text-xl font-semibold">
+            <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
+              <span className="text-gray-500 text-lg sm:text-xl font-semibold">
                 {patient.name.charAt(0).toUpperCase()}
               </span>
             </div>
@@ -70,7 +70,7 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
             <img
               src={patient.avatar}
               alt={patient.name}
-              className="w-16 h-16 rounded-full object-cover shrink-0"
+              className="w-12 h-12 rounded-full object-cover shrink-0"
               onError={() => {
                 setImageError(true);
               }}
@@ -79,7 +79,7 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
           <div className="flex-1 min-w-0">
             <h3 
               ref={nameRef}
-              className="text-xl font-semibold text-gray-800 truncate w-full"
+              className="text-lg sm:text-xl font-semibold text-gray-800 truncate w-full"
               title={nameTitle}
             >
               {patient.name}
@@ -90,7 +90,7 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
                 href={patient.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 hover:text-blue-800 text-sm truncate block w-full"
+                className="text-blue-600 hover:text-blue-800 text-xs sm:text-sm truncate block w-full"
                 title={urlTitle}
               >
                 {patient.website}
@@ -99,14 +99,14 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
           </div>
           <button
             onClick={toggleExpand}
-            className="ml-2 p-2 rounded-full bg-white hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shrink-0"
+            className="ml-2 p-1.5 sm:p-2 rounded-full bg-white hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shrink-0"
             aria-label={isExpanded ? 'Collapse details' : 'Expand details'}
             aria-expanded={isExpanded}
           >
             <CaretDownIcon
-              size={20}
+              size={18}
               weight="bold"
-              className={`text-gray-600 transition-transform duration-300 ease-in-out ${
+              className={`sm:w-5 sm:h-5 text-gray-600 transition-transform duration-300 ease-in-out ${
                 isExpanded ? 'rotate-180' : ''
               }`}
             />
@@ -118,23 +118,23 @@ export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => 
               isExpanded ? 'description-expand' : 'description-collapse'
             }
           >
-            <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed whitespace-pre-line">
               {patient.description}
             </p>
           </div>
         )}
-        <div className="mt-4 pt-4 border-t border-gray-200 flex items-center justify-between">
+        <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0">
           <p className="text-xs text-gray-400">
             Created: {new Date(patient.createdAt).toLocaleDateString()}
           </p>
           {editPatient && (
             <button
               onClick={() => editPatient(patient)}
-              className="flex justify-between gap-2 px-3 py-1.5 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              className="flex justify-center sm:justify-between gap-2 px-3 py-1.5 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 w-full sm:w-auto"
               aria-label="Edit patient"
             >
-              <PencilSimpleLineIcon size={20} weight="bold" />
-              <span className="text-sm">Edit</span>
+              <PencilSimpleLineIcon size={18} weight="bold" className="sm:w-5 sm:h-5" />
+              <span className="text-xs sm:text-sm">Edit</span>
             </button>
           )}
         </div>
