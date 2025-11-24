@@ -13,7 +13,10 @@ body {
   max-height: 24rem;
   opacity: 1;
   margin-top: 1rem;
-  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.4s ease-in-out;
+  transition:
+    max-height 0.4s ease-in-out,
+    opacity 0.4s ease-in-out,
+    margin-top 0.4s ease-in-out;
   overflow: hidden;
 }
 
@@ -21,6 +24,39 @@ body {
   max-height: 0;
   opacity: 0;
   margin-top: 0;
-  transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, margin-top 0.4s ease-in-out;
+  transition:
+    max-height 0.4s ease-in-out,
+    opacity 0.4s ease-in-out,
+    margin-top 0.4s ease-in-out;
   overflow: hidden;
+}
+
+/* Dialog styling */
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fade-in 0.2s ease-out;
+}
+
+dialog {
+  animation: slide-in 0.2s ease-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
