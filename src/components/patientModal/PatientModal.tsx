@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import type { Patient } from '../../types/patient';
 import { XIcon } from '@phosphor-icons/react';
 import { PatientForm } from './PatientForm';
+import { ModalMode } from '../../types/modalMode';
 
 interface PatientModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface PatientModalProps {
     avatar: string;
   }) => void;
   patient: Patient | null;
+  mode?: ModalMode;
 }
 
 export const PatientModal = ({
@@ -20,6 +22,7 @@ export const PatientModal = ({
   onClose,
   onSave,
   patient,
+  mode = ModalMode.Edit,
 }: PatientModalProps) => {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -58,7 +61,9 @@ export const PatientModal = ({
     >
       <div className="bg-white rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-semibold text-gray-800">Edit Patient</h2>
+          <h2 className="text-2xl font-semibold text-gray-800">
+            {mode === ModalMode.Create ? 'Add New Patient' : 'Edit Patient'}
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1"
@@ -73,6 +78,7 @@ export const PatientModal = ({
           isOpen={isOpen}
           onSave={onSave}
           onCancel={onClose}
+          mode={mode}
         />
       </div>
     </dialog>

@@ -30,9 +30,29 @@ export const useLocalPatients = (fetchedPatients: Patient[] | undefined) => {
     return localPatients.find((p) => p.id === patientId);
   };
 
+  const addPatient = (patientData: {
+    name: string;
+    website: string;
+    description: string;
+    avatar: string;
+  }): Patient => {
+    const newPatient: Patient = {
+      id: `patient-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      name: patientData.name,
+      website: patientData.website || '',
+      avatar: patientData.avatar || '',
+      description: patientData.description,
+      createdAt: new Date().toISOString(),
+    };
+
+    setLocalPatients((prevPatients) => [newPatient, ...prevPatients]);
+    return newPatient;
+  };
+
   return {
     localPatients,
     updatePatient,
     getPatientById,
+    addPatient,
   };
 };

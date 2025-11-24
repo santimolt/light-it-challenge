@@ -2,6 +2,20 @@
 
 A React application for managing patient data.
 
+## Features
+
+- **Patient List Display** - Grid layout showing all patients with cards
+- **Create Patients** - Add new patients with validation
+- **Edit Patients** - Update existing patient information
+- **Patient Cards** - Expandable cards showing patient details, avatar, website, and description
+- **Form Validation** - Comprehensive validation using Yup schema
+- **Modal Interface** - Clean modal dialogs for creating and editing patients
+- **Data Fetching** - React Query integration for efficient API data management
+- **Local State Management** - Context API for managing patient state
+- **Responsive Design** - Mobile-friendly layout with Tailwind CSS
+- **Error Handling** - Graceful error states and loading indicators
+- **Accessibility** - ARIA labels and keyboard navigation support
+
 ## Prerequisites
 
 - Node.js (version 18 or higher)
@@ -13,6 +27,10 @@ A React application for managing patient data.
 - **React 19** - UI library
 - **TypeScript** - Type-safe JavaScript
 - **Tailwind CSS** - Utility-first CSS framework with Open Sans font
+- **React Query (@tanstack/react-query)** - Data fetching and caching
+- **Formik** - Form state management and validation
+- **Yup** - Schema-based validation
+- **Phosphor Icons** - Icon library
 - **Prettier** - Code formatter
 - **ESLint** - Code linter (configured to work with Prettier)
 
@@ -24,12 +42,39 @@ The project includes:
   - `tailwind.config.js` - Tailwind CSS configuration with Open Sans font family
   - `postcss.config.js` - PostCSS configuration for Tailwind CSS processing
   - `eslint.config.js` - ESLint configuration with Prettier integration
-  - `.prettierrc.json` - Prettier formatting rules
-  - `.prettierignore` - Files to ignore during formatting
+  - `vite.config.ts` - Vite configuration
+  - `tsconfig.json` - TypeScript configuration
 
-- **Styling:**
-  - `src/styles/reset.css` - CSS reset for consistent cross-browser styling
-  - `src/styles/index.css` - Main stylesheet with Tailwind CSS imports
+- **Source Code (`src/`):**
+  - `App.tsx` - Main application component with patient list
+  - `main.tsx` - Application entry point
+  
+  - **Components (`components/`):**
+    - `PatientCard.tsx` - Patient card component with expandable description
+    - `patientModal/PatientModal.tsx` - Modal wrapper for patient forms
+    - `patientModal/PatientForm.tsx` - Form component with validation
+  
+  - **Contexts (`contexts/`):**
+    - `PatientContext.tsx` - Context provider for patient state management
+  
+  - **Hooks (`hooks/`):**
+    - `usePatients.ts` - React Query hook for fetching patients
+    - `useLocalPatients.ts` - Hook for managing local patient state (CRUD operations)
+    - `usePatientModal.ts` - Hook for managing modal state
+  
+  - **Services (`services/`):**
+    - `patientService.ts` - API service for fetching and updating patients
+  
+  - **Types (`types/`):**
+    - `patient.ts` - Patient type definitions
+    - `modalMode.ts` - Modal mode type (Create/Edit)
+  
+  - **Schemas (`schemas/`):**
+    - `patientSchema.ts` - Yup validation schema for patient forms
+  
+  - **Styles (`styles/`):**
+    - `reset.css` - CSS reset for consistent cross-browser styling
+    - `index.css` - Main stylesheet with Tailwind CSS imports
 
 - **Fonts:**
   - Open Sans font family loaded from Google Fonts

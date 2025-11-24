@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useFormik } from 'formik';
 import { patientValidationSchema } from '../../schemas/patientSchema';
 import type { Patient } from '../../types/patient';
+import { ModalMode } from '../../types/modalMode';
 
 interface PatientFormProps {
   patient: Patient | null;
@@ -13,6 +14,7 @@ interface PatientFormProps {
     avatar: string;
   }) => void;
   onCancel: () => void;
+  mode?: ModalMode;
 }
 
 export const PatientForm = ({
@@ -20,6 +22,7 @@ export const PatientForm = ({
   isOpen,
   onSave,
   onCancel,
+  mode = ModalMode.Edit,
 }: PatientFormProps) => {
   const formik = useFormik({
     initialValues: {
@@ -173,7 +176,7 @@ export const PatientForm = ({
           disabled={formik.isSubmitting}
           className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Save Changes
+          {mode === ModalMode.Create ? 'Create Patient' : 'Save Changes'}
         </button>
       </div>
     </form>

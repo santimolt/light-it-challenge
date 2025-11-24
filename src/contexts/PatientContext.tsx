@@ -4,6 +4,7 @@ import { useLocalPatients } from '../hooks/useLocalPatients';
 import { usePatientModal } from '../hooks/usePatientModal';
 import { PatientModal } from '../components/patientModal/PatientModal';
 import type { Patient } from '../types/patient';
+import { ModalMode } from '../types/modalMode';
 
 interface PatientContextValue {
   /** Local copy of patients for editing */
@@ -12,8 +13,12 @@ interface PatientContextValue {
   isModalOpen: boolean;
   /** The patient currently being edited, or null */
   selectedPatient: Patient | null;
+  /** Current modal mode (edit or create) */
+  modalMode: ModalMode;
   /** Opens the modal for editing a specific patient */
   openModal: (patient: Patient) => void;
+  /** Opens the modal for creating a new patient */
+  openCreateModal: () => void;
   /** Closes the modal */
   closeModal: () => void;
   /** Handles saving patient changes */
@@ -36,10 +41,16 @@ interface PatientProviderProps {
 
 export const PatientProvider = ({ children }: PatientProviderProps) => {
   const { data: fetchedPatients, isLoading, isError, error } = usePatients();
-  const { localPatients, updatePatient, getPatientById } =
+  const { localPatients, updatePatient, getPatientById, addPatient } =
     useLocalPatients(fetchedPatients);
-  const { isModalOpen, selectedPatient, openModal, closeModal } =
-    usePatientModal();
+  const {
+    isModalOpen,
+    selectedPatient,
+    modalMode,
+    openModal,
+    openCreateModal,
+    closeModal,
+  } = usePatientModal();
 
   const handleSave = (updates: {
     name: string;
@@ -47,9 +58,12 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     description: string;
     avatar: string;
   }) => {
-    if (!selectedPatient) return;
-
-    updatePatient(selectedPatient.id, updates);
+    if (modalMode === ModalMode.Create) {
+      addPatient(updates);
+    } else {
+      if (!selectedPatient) return;
+      updatePatient(selectedPatient.id, updates);
+    }
     closeModal();
   };
 
@@ -62,7 +76,9 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     localPatients,
     isModalOpen,
     selectedPatient: getCurrentPatient(),
+    modalMode,
     openModal,
+    openCreateModal,
     closeModal,
     handleSave,
   };
@@ -94,6 +110,7 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
         onClose={closeModal}
         onSave={handleSave}
         patient={getCurrentPatient()}
+        mode={modalMode}
       />
     </PatientContext.Provider>
   );
