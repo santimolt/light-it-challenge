@@ -14,6 +14,7 @@ A React application for managing patient data.
 - **Local State Management** - Context API for managing patient state
 - **Responsive Design** - Mobile-friendly layout with Tailwind CSS
 - **Error Handling** - Graceful error states and loading indicators
+- **Toast Notifications** - Prominent toast notifications with progress indicators for user feedback on create/edit operations
 - **Accessibility** - ARIA labels and keyboard navigation support
 
 ## Prerequisites
@@ -31,6 +32,7 @@ A React application for managing patient data.
 - **Formik** - Form state management and validation
 - **Yup** - Schema-based validation
 - **Phosphor Icons** - Icon library
+- **React Hot Toast** - Toast notification library with customizable styling
 - **Prettier** - Code formatter
 - **ESLint** - Code linter (configured to work with Prettier)
 
@@ -53,6 +55,7 @@ The project includes:
     - `PatientCard.tsx` - Patient card component with expandable description
     - `patientModal/PatientModal.tsx` - Modal wrapper for patient forms
     - `patientModal/PatientForm.tsx` - Form component with validation
+    - `CustomToaster.tsx` - Custom toast notification component with progress indicators
   
   - **Contexts (`contexts/`):**
     - `PatientContext.tsx` - Context provider for patient state management
@@ -74,7 +77,7 @@ The project includes:
   
   - **Styles (`styles/`):**
     - `reset.css` - CSS reset for consistent cross-browser styling
-    - `index.css` - Main stylesheet with Tailwind CSS imports
+    - `index.css` - Main stylesheet with Tailwind CSS imports and toast progress bar animations
 
 - **Fonts:**
   - Open Sans font family loaded from Google Fonts

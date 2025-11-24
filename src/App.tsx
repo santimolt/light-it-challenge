@@ -1,5 +1,6 @@
 import { PlusIcon } from '@phosphor-icons/react';
 import { PatientCard } from './components/PatientCard';
+import { CustomToaster } from './components/CustomToaster';
 import { PatientProvider, usePatientContext } from './contexts/PatientContext';
 
 const PatientList = () => {
@@ -51,6 +52,7 @@ export const App = () => {
   return (
     <PatientProvider>
       <PatientList />
+      <CustomToaster />
     </PatientProvider>
   );
 };

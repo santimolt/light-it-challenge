@@ -1,4 +1,5 @@
 import { createContext, useContext, type ReactNode } from 'react';
+import toast from 'react-hot-toast';
 import { usePatients } from '../hooks/usePatients';
 import { useLocalPatients } from '../hooks/useLocalPatients';
 import { usePatientModal } from '../hooks/usePatientModal';
@@ -58,13 +59,22 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     description: string;
     avatar: string;
   }) => {
-    if (modalMode === ModalMode.Create) {
-      addPatient(updates);
-    } else {
-      if (!selectedPatient) return;
-      updatePatient(selectedPatient.id, updates);
+    try {
+      if (modalMode === ModalMode.Create) {
+        addPatient(updates);
+        toast.success('Patient created successfully!');
+      } else {
+        updatePatient(selectedPatient!.id, updates);
+        toast.success('Patient updated successfully!');
+      }
+      closeModal();
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : 'An error occurred while saving the patient';
+      toast.error(errorMessage);
     }
-    closeModal();
   };
 
   const getCurrentPatient = (): Patient | null => {
