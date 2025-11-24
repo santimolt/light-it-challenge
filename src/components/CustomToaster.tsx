@@ -14,7 +14,8 @@ export const CustomToaster = () => {
           fontWeight: '600',
           padding: '16px 20px 20px 20px',
           borderRadius: '12px',
-          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)',
+          boxShadow:
+            '0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2)',
           border: '2px solid',
           minWidth: '300px',
           position: 'relative',
@@ -46,4 +47,3 @@ export const CustomToaster = () => {
     />
   );
 };
-

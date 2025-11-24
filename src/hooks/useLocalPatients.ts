@@ -12,6 +12,7 @@ export const useLocalPatients = (fetchedPatients: Patient[] | undefined) => {
   );
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocalPatients(fetchedPatients || []);
   }, [fetchedPatients]);
 
@@ -28,9 +29,12 @@ export const useLocalPatients = (fetchedPatients: Patient[] | undefined) => {
     );
   };
 
-  const getPatientById = useCallback((patientId: string): Patient | undefined => {
-    return localPatients.find((p) => p.id === patientId);
-  }, [localPatients]);
+  const getPatientById = useCallback(
+    (patientId: string): Patient | undefined => {
+      return localPatients.find((p) => p.id === patientId);
+    },
+    [localPatients]
+  );
 
   const addPatient = (patientData: {
     name: string;

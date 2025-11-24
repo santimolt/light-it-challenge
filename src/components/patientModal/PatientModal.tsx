@@ -3,6 +3,7 @@ import type { Patient } from '../../types/patient';
 import { XIcon } from '@phosphor-icons/react';
 import { PatientForm } from './PatientForm';
 import { ModalMode } from '../../types/modalMode';
+import { Button } from '../Button';
 
 interface PatientModalProps {
   isOpen: boolean;
@@ -64,13 +65,15 @@ export const PatientModal = ({
           <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
             {mode === ModalMode.Create ? 'Add New Patient' : 'Edit Patient'}
           </h2>
-          <button
+          <Button
+            variant="icon-ghost"
+            size="sm"
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full p-1 shrink-0"
+            className="text-gray-400 hover:text-gray-600 rounded-full p-1 shrink-0"
             aria-label="Close modal"
           >
             <XIcon size={20} weight="bold" />
-          </button>
+          </Button>
         </div>
 
         <PatientForm

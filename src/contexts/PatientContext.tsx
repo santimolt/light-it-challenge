@@ -1,4 +1,10 @@
-import { createContext, useContext, type ReactNode, useMemo, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  type ReactNode,
+  useMemo,
+  useCallback,
+} from 'react';
 import toast from 'react-hot-toast';
 import { usePatients } from '../hooks/usePatients';
 import { useLocalPatients } from '../hooks/useLocalPatients';
@@ -55,49 +61,66 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     closeModal,
   } = usePatientModal();
 
-  const handleSave = useCallback((updates: {
-    name: string;
-    website: string;
-    description: string;
-    avatar: string;
-  }) => {
-    try {
-      if (modalMode === ModalMode.Create) {
-        addPatient(updates);
-        toast.success('Patient created successfully!');
-      } else {
-        updatePatient(selectedPatient!.id, updates);
-        toast.success('Patient updated successfully!');
+  const handleSave = useCallback(
+    (updates: {
+      name: string;
+      website: string;
+      description: string;
+      avatar: string;
+    }) => {
+      try {
+        if (modalMode === ModalMode.Create) {
+          addPatient(updates);
+          toast.success('Patient created successfully!');
+        } else {
+          updatePatient(selectedPatient!.id, updates);
+          toast.success('Patient updated successfully!');
+        }
+        closeModal();
+      } catch (error) {
+        const errorMessage =
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while saving the patient';
+        toast.error(errorMessage);
       }
-      closeModal();
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : 'An error occurred while saving the patient';
-      toast.error(errorMessage);
-    }
-  }, [modalMode, selectedPatient, addPatient, updatePatient, closeModal]);
+    },
+    [modalMode, selectedPatient, addPatient, updatePatient, closeModal]
+  );
 
   const currentPatient = useMemo(() => {
     if (!selectedPatient) return null;
     return getPatientById(selectedPatient.id) || selectedPatient;
   }, [selectedPatient, getPatientById]);
 
-  // Use fetchedPatients for display if localPatients is empty (avoids flashing the add patients button)
-  const displayPatients = localPatients.length > 0 ? localPatients : (fetchedPatients || []);
+  const value: PatientContextValue = useMemo(() => {
+    // Use fetchedPatients for display if localPatients is empty (avoids flashing the add patients button)
+    const displayPatients =
+      localPatients.length > 0 ? localPatients : fetchedPatients || [];
 
-  const value: PatientContextValue = useMemo(() => ({
-    localPatients: displayPatients,
-    isLoading: isPending || !fetchedPatients,
+    return {
+      localPatients: displayPatients,
+      isLoading: isPending || !fetchedPatients,
+      isModalOpen,
+      selectedPatient: currentPatient,
+      modalMode,
+      openModal,
+      openCreateModal,
+      closeModal,
+      handleSave,
+    };
+  }, [
+    localPatients,
+    fetchedPatients,
+    isPending,
     isModalOpen,
-    selectedPatient: currentPatient,
+    currentPatient,
     modalMode,
     openModal,
     openCreateModal,
     closeModal,
     handleSave,
-  }), [displayPatients, isPending, fetchedPatients, isModalOpen, currentPatient, modalMode, openModal, openCreateModal, closeModal, handleSave]);
+  ]);
 
   if (isError) {
     return (

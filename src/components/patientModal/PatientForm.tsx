@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { patientValidationSchema } from '../../schemas/patientSchema';
 import type { Patient } from '../../types/patient';
 import { ModalMode } from '../../types/modalMode';
+import { Button } from '../Button';
 
 interface PatientFormProps {
   patient: Patient | null;
@@ -165,20 +166,24 @@ export const PatientForm = ({
       </div>
 
       <div className="flex flex-col-reverse sm:flex-row gap-3 justify-end">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="md"
           onClick={handleCancel}
-          className="px-4 py-2 text-sm sm:text-base text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 w-full sm:w-auto"
+          fullWidthMobile={true}
         >
           Cancel
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
+          variant="primary"
+          size="md"
           disabled={formik.isSubmitting}
-          className="px-4 py-2 text-sm sm:text-base text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+          fullWidthMobile={true}
         >
           {mode === ModalMode.Create ? 'Create Patient' : 'Save Changes'}
-        </button>
+        </Button>
       </div>
     </form>
   );

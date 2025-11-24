@@ -7,4 +7,3 @@ export enum ModalMode {
   /** Mode for creating a new patient */
   Create = 'create',
 }
-

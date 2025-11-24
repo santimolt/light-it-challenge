@@ -4,7 +4,8 @@ A React application for managing patient data.
 
 ## Features
 
-- **Patient List Display** - Grid layout showing all patients with cards
+- **Patient List Display** - Grid layout showing all patients with cards that expand independently
+- **Search Functionality** - Real-time search to filter patients by name
 - **Create Patients** - Add new patients with validation
 - **Edit Patients** - Update existing patient information
 - **Patient Cards** - Expandable cards showing patient details, avatar, website, and description
@@ -12,8 +13,9 @@ A React application for managing patient data.
 - **Modal Interface** - Clean modal dialogs for creating and editing patients
 - **Data Fetching** - React Query integration for efficient API data management
 - **Local State Management** - Context API for managing patient state
-- **Responsive Design** - Mobile-friendly layout with Tailwind CSS
+- **Responsive Design** - Fully responsive layout that adapts from mobile (1 column) to large desktop (4 columns)
 - **Error Handling** - Graceful error states and loading indicators
+- **Loading States** - Skeleton cards for better loading experience
 - **Toast Notifications** - Prominent toast notifications with progress indicators for user feedback on create/edit operations
 - **Accessibility** - ARIA labels and keyboard navigation support
 
@@ -52,7 +54,13 @@ The project includes:
   - `main.tsx` - Application entry point
   
   - **Components (`components/`):**
+    - `PatientList.tsx` - Main patient list component with search and column layout
+    - `PatientListHeader.tsx` - Header component for the patient list
     - `PatientCard.tsx` - Patient card component with expandable description
+    - `SearchBar.tsx` - Search input component with clear functionality
+    - `Button.tsx` - Reusable button component with multiple variants
+    - `AddPatientButton.tsx` - Specialized button for adding new patients
+    - `SkeletonCard.tsx` - Loading skeleton component for patient cards
     - `patientModal/PatientModal.tsx` - Modal wrapper for patient forms
     - `patientModal/PatientForm.tsx` - Form component with validation
     - `CustomToaster.tsx` - Custom toast notification component with progress indicators
@@ -64,6 +72,10 @@ The project includes:
     - `usePatients.ts` - React Query hook for fetching patients
     - `useLocalPatients.ts` - Hook for managing local patient state (CRUD operations)
     - `usePatientModal.ts` - Hook for managing modal state
+    - `useColumnCount.ts` - Hook for responsive column count based on screen size
+  
+  - **Utils (`utils/`):**
+    - `patientDistribution.ts` - Utility function for distributing patients across columns
   
   - **Services (`services/`):**
     - `patientService.ts` - API service for fetching and updating patients
@@ -77,7 +89,7 @@ The project includes:
   
   - **Styles (`styles/`):**
     - `reset.css` - CSS reset for consistent cross-browser styling
-    - `index.css` - Main stylesheet with Tailwind CSS imports and toast progress bar animations
+    - `index.css` - Main stylesheet with Tailwind CSS imports, toast progress bar animations, and card expansion transitions
 
 - **Fonts:**
   - Open Sans font family loaded from Google Fonts
@@ -126,3 +138,12 @@ This command will serve the built files so you can test the application as it wi
 - `npm run lint` - Run ESLint to check code quality
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check if code is formatted correctly without making changes
+
+## State Management
+- **Context API**: Centralized state management through `PatientContext` for patient data and modal state
+- **React Query**: Efficient data fetching and caching with automatic refetching and error handling
+- **Local State**: Editable patient data is maintained locally until saved, allowing for optimistic updates
+
+## Code Organization
+- **Custom Hooks**: Reusable logic extracted into custom hooks (`useColumnCount`, `useLocalPatients`, `usePatientModal`)
+- **Utility Functions**: Pure functions for data manipulation (`patientDistribution`, `filterPatients`)
