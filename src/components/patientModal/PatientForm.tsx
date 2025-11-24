@@ -48,7 +48,8 @@ export const PatientForm = ({
     if (!isOpen) {
       formik.resetForm();
     }
-  }, [isOpen, formik]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
 
   const handleCancel = () => {
     formik.resetForm();

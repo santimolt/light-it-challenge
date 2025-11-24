@@ -1,4 +1,4 @@
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, type ReactNode, useMemo, useCallback } from 'react';
 import toast from 'react-hot-toast';
 import { usePatients } from '../hooks/usePatients';
 import { useLocalPatients } from '../hooks/useLocalPatients';
@@ -53,7 +53,7 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
     closeModal,
   } = usePatientModal();
 
-  const handleSave = (updates: {
+  const handleSave = useCallback((updates: {
     name: string;
     website: string;
     description: string;
@@ -75,23 +75,23 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
           : 'An error occurred while saving the patient';
       toast.error(errorMessage);
     }
-  };
+  }, [modalMode, selectedPatient, addPatient, updatePatient, closeModal]);
 
-  const getCurrentPatient = (): Patient | null => {
+  const currentPatient = useMemo(() => {
     if (!selectedPatient) return null;
     return getPatientById(selectedPatient.id) || selectedPatient;
-  };
+  }, [selectedPatient, getPatientById]);
 
-  const value: PatientContextValue = {
+  const value: PatientContextValue = useMemo(() => ({
     localPatients,
     isModalOpen,
-    selectedPatient: getCurrentPatient(),
+    selectedPatient: currentPatient,
     modalMode,
     openModal,
     openCreateModal,
     closeModal,
     handleSave,
-  };
+  }), [localPatients, isModalOpen, currentPatient, modalMode, openModal, openCreateModal, closeModal, handleSave]);
 
   if (isLoading) {
     return (
@@ -119,7 +119,7 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
         isOpen={isModalOpen}
         onClose={closeModal}
         onSave={handleSave}
-        patient={getCurrentPatient()}
+        patient={currentPatient}
         mode={modalMode}
       />
     </PatientContext.Provider>

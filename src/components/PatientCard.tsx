@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import type { Patient } from '../types/patient';
 import { CaretDownIcon, PencilSimpleLineIcon } from '@phosphor-icons/react';
 
@@ -9,7 +9,7 @@ interface PatientCardProps {
   editPatient?: (patient: Patient) => void;
 }
 
-export const PatientCard = ({ patient, editPatient }: PatientCardProps) => {
+export const PatientCard = memo(({ patient, editPatient }: PatientCardProps) => {
   const [imageError, setImageError] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -98,4 +98,4 @@ export const PatientCard = ({ patient, editPatient }: PatientCardProps) => {
       </div>
     </div>
   );
-};
+});

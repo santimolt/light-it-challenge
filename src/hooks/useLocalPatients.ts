@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Patient } from '../types/patient';
 
 export const useLocalPatients = (fetchedPatients: Patient[] | undefined) => {
@@ -26,9 +26,9 @@ export const useLocalPatients = (fetchedPatients: Patient[] | undefined) => {
     );
   };
 
-  const getPatientById = (patientId: string): Patient | undefined => {
+  const getPatientById = useCallback((patientId: string): Patient | undefined => {
     return localPatients.find((p) => p.id === patientId);
-  };
+  }, [localPatients]);
 
   const addPatient = (patientData: {
     name: string;
