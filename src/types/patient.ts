@@ -4,7 +4,7 @@ export type Patient = {
   /** Full name of the patient */
   name: string;
   /** URL to the patient's avatar image */
-  avatar: string;
+  avatar: string | object;
   /** Detailed description or notes about the patient */
   description: string;
   /** Personal or professional website URL */

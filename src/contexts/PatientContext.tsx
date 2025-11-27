@@ -10,6 +10,7 @@ import { usePatients } from '../hooks/usePatients';
 import { useLocalPatients } from '../hooks/useLocalPatients';
 import { usePatientModal } from '../hooks/usePatientModal';
 import { PatientModal } from '../components/patientModal/PatientModal';
+import { ErrorPage } from '../components/ErrorPage';
 import type { Patient } from '../types/patient';
 import { ModalMode } from '../types/modalMode';
 
@@ -49,7 +50,7 @@ interface PatientProviderProps {
 }
 
 export const PatientProvider = ({ children }: PatientProviderProps) => {
-  const { fetchedPatients, isPending, isError, error } = usePatients();
+  const { fetchedPatients, isPending, isError, error, refetch } = usePatients();
   const { localPatients, updatePatient, getPatientById, addPatient } =
     useLocalPatients(fetchedPatients);
   const {
@@ -73,7 +74,10 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
           addPatient(updates);
           toast.success('Patient created successfully!');
         } else {
-          updatePatient(selectedPatient!.id, updates);
+          if (!selectedPatient) {
+            throw new Error('No patient selected for editing');
+          }
+          updatePatient(selectedPatient.id, updates);
           toast.success('Patient updated successfully!');
         }
         closeModal();
@@ -123,13 +127,40 @@ export const PatientProvider = ({ children }: PatientProviderProps) => {
   ]);
 
   if (isError) {
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : 'Failed to load patients. Please check your connection and try again.';
+
+    // Determine error type for better messaging
+    let title = 'Unable to Load Patients';
+    let message = errorMessage;
+
+    if (errorMessage.includes('timeout')) {
+      title = 'Request Timeout';
+      message =
+        'The request took too long to complete. Please check your internet connection and try again.';
+    } else if (errorMessage.includes('Network error') || errorMessage.includes('fetch')) {
+      title = 'Connection Error';
+      message =
+        'Unable to connect to the server. Please check your internet connection and try again.';
+    } else if (errorMessage.includes('Invalid data format')) {
+      title = 'Data Format Error';
+      message =
+        'The server returned data in an unexpected format. Please try again later.';
+    } else if (errorMessage.includes('Invalid JSON')) {
+      title = 'Response Error';
+      message =
+        'The server response could not be parsed. Please try again later.';
+    }
+
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-red-600">
-          Error:{' '}
-          {error instanceof Error ? error.message : 'Failed to load patients'}
-        </p>
-      </div>
+      <ErrorPage
+        title={title}
+        message={message}
+        onRetry={() => refetch()}
+        showRetry={true}
+      />
     );
   }
 

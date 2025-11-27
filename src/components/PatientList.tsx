@@ -7,25 +7,8 @@ import { AddPatientButton } from './AddPatientButton';
 import { usePatientContext } from '../contexts/PatientContext';
 import { useColumnCount } from '../hooks/useColumnCount';
 import { distributePatients } from '../utils/patientDistribution';
-import type { Patient } from '../types/patient';
-
-const SKELETON_COUNT = 12;
-const SKELETON_GRID_CLASSES =
-  'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 w-full';
-
-/**
- * Filters patients based on search query
- */
-const filterPatients = (patients: Patient[], searchQuery: string): Patient[] => {
-  if (!searchQuery.trim()) {
-    return patients;
-  }
-
-  const query = searchQuery.toLowerCase().trim();
-  return patients.filter((patient) =>
-    patient.name.toLowerCase().includes(query)
-  );
-};
+import { filterPatients } from '../utils/filterPatients';
+import { SKELETON_COUNT, SKELETON_GRID_CLASSES } from '../constants';
 
 export const PatientList = () => {
   const { localPatients, isLoading, openModal, openCreateModal } =
