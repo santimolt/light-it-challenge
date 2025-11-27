@@ -73,14 +73,17 @@ export const fetchPatients = async (): Promise<Patient[]> => {
   } catch (error) {
     clearTimeout(timeoutId);
 
-    if (error instanceof Error) {
-      // Handle abort (timeout)
-      if (error.name === 'AbortError') {
-        throw new Error(
-          `Request timeout: Failed to fetch patients within ${FETCH_TIMEOUT_MS}ms`
-        );
-      }
+    // Handle abort (timeout) - DOMException or Error with name 'AbortError'
+    if (
+      (error instanceof Error || error instanceof DOMException) &&
+      error.name === 'AbortError'
+    ) {
+      throw new Error(
+        `Request timeout: Failed to fetch patients within ${FETCH_TIMEOUT_MS}ms`
+      );
+    }
 
+    if (error instanceof Error) {
       // Handle network errors
       if (error.message.includes('fetch')) {
         throw new Error(

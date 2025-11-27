@@ -1,4 +1,4 @@
-import { ArrowPathIcon, ExclamationTriangleIcon } from '@phosphor-icons/react';
+import { ArrowUpIcon, WarningIcon } from '@phosphor-icons/react';
 import { Button } from './Button';
 
 interface ErrorPageProps {
@@ -34,7 +34,7 @@ export const ErrorPage = ({
         {/* Error Icon */}
         <div className="flex justify-center mb-6">
           <div className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center">
-            <ExclamationTriangleIcon
+            <WarningIcon
               size={48}
               weight="fill"
               className="text-red-600"
@@ -56,7 +56,7 @@ export const ErrorPage = ({
               onClick={onRetry}
               className="flex items-center justify-center gap-2"
             >
-              <ArrowPathIcon size={20} weight="bold" />
+              <ArrowUpIcon size={20} weight="bold" />
               Try Again
             </Button>
           )}
